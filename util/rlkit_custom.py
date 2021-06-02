@@ -68,17 +68,17 @@ class CustomBaseRLAlgorithm(object, metaclass=abc.ABCMeta):
     def _get_snapshot(self):
         snapshot = {}
         for k, v in self.trainer.get_snapshot().items():
-            snapshot['trainer/' + k] = v
+            snapshot['trainer/' + k] = v.state_dict()
         for k, v in self.expl_data_collector.get_snapshot().items():
             if k == 'env':
                 continue
-            snapshot['exploration/' + k] = v
+            snapshot['exploration/' + k] = v.state_dict()
         for k, v in self.eval_data_collector.get_snapshot().items():
             if k == 'env':
                 continue
-            snapshot['evaluation/' + k] = v
+            snapshot['evaluation/' + k] = v.state_dict()
         for k, v in self.replay_buffer.get_snapshot().items():
-            snapshot['replay_buffer/' + k] = v
+            snapshot['replay_buffer/' + k] = v.state_dict()
         return snapshot
 
     def _log_stats(self, epoch):
